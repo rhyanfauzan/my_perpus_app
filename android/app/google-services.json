@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1090405170737",
+    "project_id": "myperpus-a5b72",
+    "storage_bucket": "myperpus-a5b72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090405170737:android:034cf3b580b5e56b509f10",
+        "android_client_info": {
+          "package_name": "com.example.my_perpus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090405170737-hc55t59te62e5saqagv44c94ib3vpjji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVGtbIfwB-QlCv4k8TSsUj48Ni5IJfo5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1090405170737-hc55t59te62e5saqagv44c94ib3vpjji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
