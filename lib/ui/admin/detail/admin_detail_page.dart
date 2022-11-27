@@ -29,10 +29,18 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
   @override
   Widget build(BuildContext context) {
     String noHp = '081234567890';
+    bool isEmpty = false;
+    List np = [];
+    // List<TextEditingController> _npController = [];
     String? code;
+
     return SafeArea(
       child: Consumer<AdminProvider>(builder: (context, valueAdmin, _) {
         // code = valueAdmin.
+        List<TextEditingController> _controller = [
+          for (int i = 0; i < valueAdmin.detailPeminjaman.bukuModel.length; i++)
+            TextEditingController()
+        ];
         return Scaffold(
           backgroundColor: ColorPalette.generalBackgroundColor,
           body: Padding(
@@ -108,38 +116,69 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                                 .detailPeminjaman.tanggalPengembalian
                                 .toString())),
                         const SizedBox(height: 15),
-                        for (int i = 0;
-                            i < valueAdmin.detailPeminjaman.bukuModel.length;
-                            i++)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            child: VerticalTitleValue(
-                                title: 'Nomor Panggil',
-                                value:
-                                    '${valueAdmin.detailPeminjaman.bukuModel[i].noPanggil} (${valueAdmin.detailPeminjaman.bukuModel[i].judul})'),
-                          ),
-                        // if (valueAdmin.detailPeminjaman.status == 0)
-                        //   Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       const VerticalTitleValue(
-                        //           title: 'Nomor Panggil',
-                        //           value:
-                        //               'Masukan nomor panggil terlebih dahulu!'),
-                        //       InputFieldRounded(
-                        //         label: "Masukan Nomor Panggil",
-                        //         hint: "Masukan Nomor Panggil",
-                        //         onChange: (val) {
-                        //           noHp = val;
-                        //         },
-                        //         secureText: false,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // if (valueAdmin.detailPeminjaman.status != 0)
-                        //   VerticalTitleValue(
-                        //       title: 'Nomor Panggil',
-                        //       value: '${valueAdmin.detailPeminjaman.noHp}'),
+                        if (valueAdmin.detailPeminjaman.status == 0)
+                          for (int i = 0;
+                              i < valueAdmin.detailPeminjaman.bukuModel.length;
+                              i++)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                VerticalTitleValue(
+                                    title: 'Nomor Panggil',
+                                    value:
+                                        'Buku ${valueAdmin.detailPeminjaman.bukuModel[i].judul}'),
+                                // InputFieldRounded(
+                                //   label: "Masukan Nomor Panggil",
+                                //   hint: "Masukan Nomor Panggil",
+                                //   onChange: (val) {
+                                //     np.add(val);
+                                //     valueAdmin.detailPeminjaman.bukuModel[i]
+                                //         .noPanggil = np[i];
+                                //     print('np[$i]: ${np[i]}');
+                                //   },
+                                //   secureText: false,
+                                // ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                TextFormField(
+                                  controller: _controller[i],
+                                  decoration: InputDecoration(
+                                    hintText: 'Masukan Nomor Panggil',
+                                    // labelText: 'Nomor Panggil',
+                                    fillColor: Colors.white,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: const BorderSide(
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: const BorderSide(
+                                        color: Colors.grey,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                )
+                              ],
+                            ),
+                        if (valueAdmin.detailPeminjaman.status != 0)
+                          for (int i = 0;
+                              i < valueAdmin.detailPeminjaman.bukuModel.length;
+                              i++)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: VerticalTitleValue(
+                                  title:
+                                      'Nomor Panggil (${valueAdmin.detailPeminjaman.bukuModel[i].noPanggil})',
+                                  value:
+                                      'Buku ${valueAdmin.detailPeminjaman.bukuModel[i].judul}'),
+                            ),
                       ],
                     ),
                   ),
@@ -148,7 +187,22 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                   ButtonRounded(
                     text: "Konfirmasi Pengambilan Buku",
                     onPressed: () async {
-                      if (noHp != null) {
+                      int i = 0;
+                      while (i < valueAdmin.detailPeminjaman.bukuModel.length) {
+                        if (_controller[i].text.isEmpty) {
+                          isEmpty = true;
+                          print('Jadi true');
+                        }
+                        valueAdmin.detailPeminjaman.bukuModel[i].noPanggil =
+                            _controller[i].text;
+                        print(
+                            'value $i : ${valueAdmin.detailPeminjaman.bukuModel[i].noPanggil}');
+                        print('controller $i : ${_controller[i].text}');
+                        i++;
+                      }
+                      print('isEmpty $isEmpty');
+
+                      if (isEmpty == false) {
                         var result = await Provider.of<PeminjamanProvider>(
                                 context,
                                 listen: false)
@@ -175,7 +229,10 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               ),
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                isEmpty = false;
+                              },
                               color: ColorPalette.generalPrimaryColor,
                               radius: BorderRadius.circular(0.0),
                             ),

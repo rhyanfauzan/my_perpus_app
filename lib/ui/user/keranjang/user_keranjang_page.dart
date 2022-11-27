@@ -124,7 +124,7 @@ class _UserKeranjangPageState extends State<UserKeranjangPage> {
     EasyLoading.show(status: "Loading");
     var user = Provider.of<AuthProvider>(context, listen: false).user;
     var result = await Provider.of<PeminjamanProvider>(context, listen: false)
-        .doPeminjaman(user, tanggalPeminjaman!);
+        .doPeminjaman(user, tanggalPeminjaman);
     await Provider.of<AuthProvider>(context, listen: false).userIsOrderBook();
 
     result.fold(
