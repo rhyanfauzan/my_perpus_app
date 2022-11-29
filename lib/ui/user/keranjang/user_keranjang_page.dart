@@ -34,7 +34,7 @@ class _UserKeranjangPageState extends State<UserKeranjangPage> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: Text(
+            title: const Text(
               "Keranjang",
               style: TextStyle(color: ColorPalette.generalPrimaryColor),
             ),
@@ -64,7 +64,7 @@ class _UserKeranjangPageState extends State<UserKeranjangPage> {
                                     listen: false)
                                 .hapusItemDalamKeranjang(
                                     valuePeminjaman.keranjang[index].id!),
-                            child: Icon(
+                            child: const Icon(
                               Icons.delete,
                               size: 30,
                             ),
@@ -137,13 +137,13 @@ class _UserKeranjangPageState extends State<UserKeranjangPage> {
           desc: l,
           buttons: [
             DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
               onPressed: () => Navigator.pop(context),
               color: ColorPalette.generalPrimaryColor,
               radius: BorderRadius.circular(0.0),
+              child: const Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
           ],
         ).show();
@@ -157,16 +157,16 @@ class _UserKeranjangPageState extends State<UserKeranjangPage> {
           desc: "Menunggu pengambilan buku dari pustakawan",
           buttons: [
             DialogButton(
-              child: Text(
-                "Close",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
               onPressed: () {
                 Navigator.pop(context);
                 Get.back();
               },
               color: ColorPalette.generalPrimaryColor,
               radius: BorderRadius.circular(0.0),
+              child: const Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
           ],
         ).show();

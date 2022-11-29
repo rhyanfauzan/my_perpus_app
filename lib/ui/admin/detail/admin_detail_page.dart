@@ -30,7 +30,7 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
   Widget build(BuildContext context) {
     String noHp = '081234567890';
     bool isEmpty = false;
-    List np = [];
+    Map<String, dynamic> np = {};
     // List<TextEditingController> _npController = [];
     String? code;
 
@@ -41,6 +41,10 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
           for (int i = 0; i < valueAdmin.detailPeminjaman.bukuModel.length; i++)
             TextEditingController()
         ];
+        for (int i = 0; i < valueAdmin.detailPeminjaman.bukuModel.length; i++) {
+          np.addAll({'$i' : '${i.toString()}'});
+          print('np ${np[i]}');
+        }
         return Scaffold(
           backgroundColor: ColorPalette.generalBackgroundColor,
           body: Padding(
@@ -127,17 +131,6 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                                     title: 'Nomor Panggil',
                                     value:
                                         'Buku ${valueAdmin.detailPeminjaman.bukuModel[i].judul}'),
-                                // InputFieldRounded(
-                                //   label: "Masukan Nomor Panggil",
-                                //   hint: "Masukan Nomor Panggil",
-                                //   onChange: (val) {
-                                //     np.add(val);
-                                //     valueAdmin.detailPeminjaman.bukuModel[i]
-                                //         .noPanggil = np[i];
-                                //     print('np[$i]: ${np[i]}');
-                                //   },
-                                //   secureText: false,
-                                // ),
                                 const SizedBox(
                                   height: 6,
                                 ),
@@ -193,10 +186,8 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                           isEmpty = true;
                           print('Jadi true');
                         }
-                        valueAdmin.detailPeminjaman.bukuModel[i].noPanggil =
-                            _controller[i].text;
-                        print(
-                            'value $i : ${valueAdmin.detailPeminjaman.bukuModel[i].noPanggil}');
+                         np.update('$i', (value) => _controller[i].text);
+                        print('value np $i : ${np[i]}');
                         print('controller $i : ${_controller[i].text}');
                         i++;
                       }
@@ -207,7 +198,7 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                                 context,
                                 listen: false)
                             .setNoHpPeminjaman(
-                                noHp, valueAdmin.detailPeminjaman);
+                                np, noHp, valueAdmin.detailPeminjaman);
                         result.fold((l) {
                           print('Gagal, no Hp: $noHp');
                         }, (r) {
@@ -224,17 +215,17 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                           desc: "Masukan Nomor Panggil terlebih dahulu!",
                           buttons: [
                             DialogButton(
-                              child: const Text(
-                                "Close",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
                               onPressed: () {
                                 Navigator.pop(context);
                                 isEmpty = false;
                               },
                               color: ColorPalette.generalPrimaryColor,
                               radius: BorderRadius.circular(0.0),
+                              child: const Text(
+                                "Close",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             ),
                           ],
                         ).show();
@@ -287,13 +278,13 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: l,
         buttons: [
           DialogButton(
+            onPressed: () => Navigator.pop(context),
+            color: ColorPalette.generalPrimaryColor,
+            radius: BorderRadius.circular(0.0),
             child: const Text(
               "Close",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
-            color: ColorPalette.generalPrimaryColor,
-            radius: BorderRadius.circular(0.0),
           ),
         ],
       ).show();
@@ -306,16 +297,16 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: "Sukses konfirmasi peminjaman",
         buttons: [
           DialogButton(
-            child: const Text(
-              "Close",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
             onPressed: () {
               Navigator.pop(context);
               Get.back();
             },
             color: ColorPalette.generalPrimaryColor,
             radius: BorderRadius.circular(0.0),
+            child: const Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ],
       ).show();
@@ -340,13 +331,13 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: l,
         buttons: [
           DialogButton(
+            onPressed: () => Navigator.pop(context),
+            color: ColorPalette.generalPrimaryColor,
+            radius: BorderRadius.circular(0.0),
             child: const Text(
               "Close",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
-            color: ColorPalette.generalPrimaryColor,
-            radius: BorderRadius.circular(0.0),
           ),
         ],
       ).show();
@@ -359,16 +350,16 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: "Sukses konfirmasi pengambilan",
         buttons: [
           DialogButton(
-            child: const Text(
-              "Close",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
             onPressed: () {
               Navigator.pop(context);
               Get.back();
             },
             color: ColorPalette.generalPrimaryColor,
             radius: BorderRadius.circular(0.0),
+            child: const Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ],
       ).show();
@@ -389,13 +380,13 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: l,
         buttons: [
           DialogButton(
+            onPressed: () => Navigator.pop(context),
+            color: ColorPalette.generalPrimaryColor,
+            radius: BorderRadius.circular(0.0),
             child: const Text(
               "Close",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
-            color: ColorPalette.generalPrimaryColor,
-            radius: BorderRadius.circular(0.0),
           ),
         ],
       ).show();
@@ -408,16 +399,16 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: "Sukses konfirmasi pengembalian",
         buttons: [
           DialogButton(
-            child: const Text(
-              "Close",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
             onPressed: () {
               Navigator.pop(context);
               Get.back();
             },
             color: ColorPalette.generalPrimaryColor,
             radius: BorderRadius.circular(0.0),
+            child: const Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ],
       ).show();
@@ -438,13 +429,13 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: l,
         buttons: [
           DialogButton(
+            onPressed: () => Navigator.pop(context),
+            color: ColorPalette.generalPrimaryColor,
+            radius: BorderRadius.circular(0.0),
             child: const Text(
               "Close",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            onPressed: () => Navigator.pop(context),
-            color: ColorPalette.generalPrimaryColor,
-            radius: BorderRadius.circular(0.0),
           ),
         ],
       ).show();
@@ -457,16 +448,16 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
         desc: "Sukses konfirmasi pembatalan",
         buttons: [
           DialogButton(
-            child: const Text(
-              "Close",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
             onPressed: () {
               Navigator.pop(context);
               Get.back();
             },
             color: ColorPalette.generalPrimaryColor,
             radius: BorderRadius.circular(0.0),
+            child: const Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ],
       ).show();

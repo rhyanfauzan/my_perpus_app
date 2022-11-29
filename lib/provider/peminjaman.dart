@@ -46,19 +46,32 @@ class PeminjamanProvider extends ChangeNotifier {
 
   // tambahnohp
   Future<Either<String, PeminjamanModel>> setNoHpPeminjaman(
-      String noHp, PeminjamanModel peminjamanModel) async {
+      Map<String, dynamic> np, String noHp, PeminjamanModel peminjamanModel) async {
     try {
-      var result = await _peminjamanService.setNoHp(noHp, peminjamanModel);
+      var result = await _peminjamanService.setNoHp(np, noHp, peminjamanModel);
       riwayatSaya[riwayatSaya.indexWhere(
           (element) => element.id == peminjamanModel.id)] = peminjamanModel;
+      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        peminjamanModel.bukuModel[i].noPanggil = np[i];
+        notifyListeners();
+      }
       peminjamanModel.noHp = noHp;
-      notifyListeners();
-      print('no hp berhasil ditambahkan $noHp, ${peminjamanModel.noHp}');
+
+      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        print(
+            'no panggil berhasil ditambahkan ${peminjamanModel.bukuModel[i].noPanggil}');
+      }
       return right(result);
     } catch (e) {
+      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        peminjamanModel.bukuModel[i].noPanggil = np[i];
+        notifyListeners();
+      }
       peminjamanModel.noHp = noHp;
-      notifyListeners();
-      print('no hp ditambahkan $noHp, ${peminjamanModel.noHp}');
+      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        print(
+            'no panggil ditambahkan ${peminjamanModel.bukuModel[i].noPanggil}');
+      }
       return left(e.toString());
     }
   }
@@ -76,7 +89,6 @@ class PeminjamanProvider extends ChangeNotifier {
       UserModel user, DateTime tanggalPeminjman) async {
     try {
       List<BukuModel> buku = [];
-
       await _peminjamanService.setPeminjaman(keranjang, user, tanggalPeminjman);
       buku = keranjang;
       keranjang = [];

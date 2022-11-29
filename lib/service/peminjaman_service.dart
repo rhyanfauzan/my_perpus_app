@@ -38,6 +38,7 @@ class PeminjamanService {
         'tanggalPeminjaman': tanggalPeminjaman,
         'tanggalPengembalian': tanggalPengembalian,
         'noHp': '',
+        'np': '{}',
       });
 
       buku.forEach((element) async {
@@ -48,26 +49,34 @@ class PeminjamanService {
 
       var userById = await _userReference.doc(_auth.currentUser!.uid);
       userById.update({"isOrder": true});
+      print('berhasil add peminjaman');
     } catch (e) {
+      print('gagal add peminjaman');
       rethrow;
     }
   }
 
   // tambahnomorhp
-  Future<PeminjamanModel> setNoHp(
-      String noHp, PeminjamanModel peminjamanModel) async {
+  Future<PeminjamanModel> setNoHp(Map<String, dynamic> np, String noHp,
+      PeminjamanModel peminjamanModel) async {
     try {
       var peminjamanById = await _peminjaman.doc(peminjamanModel.id);
-      peminjamanById.update({
-        "noHp": noHp,
-      });
-      print('no hp: ${noHp}');
-      print('berhasil add no hp: ${peminjamanModel.noHp}');
-      
+      for (int i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        peminjamanById.update({
+          // "bukuModel.$i.noPanggil": np[i],
+          // "bukuModel" : {
+          //   "noPanggil" : np[i]
+          // }
+          "np.$i": np[i],
+        });
+        print('berhasil add no panggil ${peminjamanModel.np![i]}');
+      }
+
       return peminjamanModel;
     } catch (e) {
-      print('gagal add no hp: ${peminjamanModel.noHp}');
-
+      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
+        print(' add no panggil ${peminjamanModel.np![i]}');
+      }
       rethrow;
     }
   }

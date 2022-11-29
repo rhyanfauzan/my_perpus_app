@@ -12,6 +12,7 @@ class PeminjamanModel {
   DateTime? tanggalPeminjaman;
   DateTime? tanggalPengembalian;
   String? noHp;
+  Map<String, dynamic>? np;
   int perpanjang;
 
   PeminjamanModel(
@@ -23,6 +24,7 @@ class PeminjamanModel {
       this.tanggalPeminjaman,
       this.tanggalPengembalian,
       this.noHp,
+      this.np,
       required this.perpanjang});
 
   factory PeminjamanModel.fromjson(Map<String, dynamic> json, String id) {
@@ -39,6 +41,7 @@ class PeminjamanModel {
         tanggalPeminjaman: jsonTglPeminjaman.toDate(),
         tanggalPengembalian: jsonTglPengembalian.toDate(),
         noHp: json['noHp'],
+        np: Map<String, dynamic>.from(jsonDecode(json['np'])),
         perpanjang: json['perpanjang']);
   }
 
@@ -51,6 +54,7 @@ class PeminjamanModel {
         'tanggalPeminjaman': tanggalPeminjaman,
         'tanggalPengembalian': tanggalPengembalian,
         'noHp': noHp,
+        'np': np,
         'perpanjang': perpanjang,
       };
 }
