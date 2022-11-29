@@ -46,32 +46,24 @@ class PeminjamanProvider extends ChangeNotifier {
 
   // tambahnohp
   Future<Either<String, PeminjamanModel>> setNoHpPeminjaman(
-      Map<String, dynamic> np, String noHp, PeminjamanModel peminjamanModel) async {
+      String? noPanggil1, String? noPanggil2, String? noPanggil3, PeminjamanModel peminjamanModel) async {
     try {
-      var result = await _peminjamanService.setNoHp(np, noHp, peminjamanModel);
+      var result =
+          await _peminjamanService.setNoHp(noPanggil1, noPanggil2, noPanggil3, peminjamanModel);
       riwayatSaya[riwayatSaya.indexWhere(
           (element) => element.id == peminjamanModel.id)] = peminjamanModel;
-      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        peminjamanModel.bukuModel[i].noPanggil = np[i];
-        notifyListeners();
-      }
-      peminjamanModel.noHp = noHp;
-
-      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        print(
-            'no panggil berhasil ditambahkan ${peminjamanModel.bukuModel[i].noPanggil}');
-      }
+      peminjamanModel.noPanggil1 = noPanggil1;
+      peminjamanModel.noPanggil2 = noPanggil2;
+      peminjamanModel.noPanggil3 = noPanggil3;
+      notifyListeners();
+      print('no panggil berhasil ditambahkan ${peminjamanModel.noPanggil1}');
       return right(result);
     } catch (e) {
-      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        peminjamanModel.bukuModel[i].noPanggil = np[i];
-        notifyListeners();
-      }
-      peminjamanModel.noHp = noHp;
-      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        print(
-            'no panggil ditambahkan ${peminjamanModel.bukuModel[i].noPanggil}');
-      }
+      peminjamanModel.noPanggil1 = noPanggil1;
+      peminjamanModel.noPanggil2 = noPanggil2;
+      peminjamanModel.noPanggil3 = noPanggil3;
+      notifyListeners();
+      print('no panggil ditambahkan ${peminjamanModel.noPanggil1}');
       return left(e.toString());
     }
   }

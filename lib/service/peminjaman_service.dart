@@ -57,26 +57,21 @@ class PeminjamanService {
   }
 
   // tambahnomorhp
-  Future<PeminjamanModel> setNoHp(Map<String, dynamic> np, String noHp,
-      PeminjamanModel peminjamanModel) async {
+  Future<PeminjamanModel> setNoHp(String? noPanggil1, String? noPanggil2,
+      String? noPanggil3, PeminjamanModel peminjamanModel) async {
     try {
       var peminjamanById = await _peminjaman.doc(peminjamanModel.id);
-      for (int i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        peminjamanById.update({
-          // "bukuModel.$i.noPanggil": np[i],
-          // "bukuModel" : {
-          //   "noPanggil" : np[i]
-          // }
-          "np.$i": np[i],
-        });
-        print('berhasil add no panggil ${peminjamanModel.np![i]}');
-      }
+      peminjamanById.update({
+        "noPanggil1": noPanggil1,
+        "noPanggil2": noPanggil2,
+        "noPanggil3": noPanggil3,
+      });
+
+      print('berhasil add no panggil ${peminjamanModel.noPanggil1}');
 
       return peminjamanModel;
     } catch (e) {
-      for (var i = 0; i < peminjamanModel.bukuModel.length; i++) {
-        print(' add no panggil ${peminjamanModel.np![i]}');
-      }
+      print(' add no panggil ${peminjamanModel.noPanggil1}');
       rethrow;
     }
   }

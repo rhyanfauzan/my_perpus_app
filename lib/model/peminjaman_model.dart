@@ -11,8 +11,9 @@ class PeminjamanModel {
   int status;
   DateTime? tanggalPeminjaman;
   DateTime? tanggalPengembalian;
-  String? noHp;
-  Map<String, dynamic>? np;
+  String? noPanggil1;
+  String? noPanggil2;
+  String? noPanggil3;
   int perpanjang;
 
   PeminjamanModel(
@@ -23,8 +24,9 @@ class PeminjamanModel {
       required this.status,
       this.tanggalPeminjaman,
       this.tanggalPengembalian,
-      this.noHp,
-      this.np,
+      this.noPanggil1,
+      this.noPanggil2,
+      this.noPanggil3,
       required this.perpanjang});
 
   factory PeminjamanModel.fromjson(Map<String, dynamic> json, String id) {
@@ -40,8 +42,9 @@ class PeminjamanModel {
         status: json['status'],
         tanggalPeminjaman: jsonTglPeminjaman.toDate(),
         tanggalPengembalian: jsonTglPengembalian.toDate(),
-        noHp: json['noHp'],
-        np: Map<String, dynamic>.from(jsonDecode(json['np'])),
+        noPanggil1: json['noPanggil1'],
+        noPanggil2: json['noPanggil2'],
+        noPanggil3: json['noPanggil3'],
         perpanjang: json['perpanjang']);
   }
 
@@ -53,8 +56,9 @@ class PeminjamanModel {
         'status': status,
         'tanggalPeminjaman': tanggalPeminjaman,
         'tanggalPengembalian': tanggalPengembalian,
-        'noHp': noHp,
-        'np': np,
+        'noPanggil1': noPanggil1,
+        'noPanggil2': noPanggil2,
+        'noPanggil3': noPanggil3,
         'perpanjang': perpanjang,
       };
 }

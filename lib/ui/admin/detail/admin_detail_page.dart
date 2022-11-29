@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:my_perpus/helper/color_palette.dart';
@@ -28,10 +29,10 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
   PeminjamanService _peminjamanService = PeminjamanService();
   @override
   Widget build(BuildContext context) {
-    String noHp = '081234567890';
+    String? noPanggil1;
+    String? noPanggil2;
+    String? noPanggil3;
     bool isEmpty = false;
-    Map<String, dynamic> np = {};
-    // List<TextEditingController> _npController = [];
     String? code;
 
     return SafeArea(
@@ -41,10 +42,6 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
           for (int i = 0; i < valueAdmin.detailPeminjaman.bukuModel.length; i++)
             TextEditingController()
         ];
-        for (int i = 0; i < valueAdmin.detailPeminjaman.bukuModel.length; i++) {
-          np.addAll({'$i' : '${i.toString()}'});
-          print('np ${np[i]}');
-        }
         return Scaffold(
           backgroundColor: ColorPalette.generalBackgroundColor,
           body: Padding(
@@ -136,6 +133,10 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                                 ),
                                 TextFormField(
                                   controller: _controller[i],
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   decoration: InputDecoration(
                                     hintText: 'Masukan Nomor Panggil',
                                     // labelText: 'Nomor Panggil',
@@ -161,17 +162,41 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                               ],
                             ),
                         if (valueAdmin.detailPeminjaman.status != 0)
-                          for (int i = 0;
-                              i < valueAdmin.detailPeminjaman.bukuModel.length;
-                              i++)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
-                              child: VerticalTitleValue(
-                                  title:
-                                      'Nomor Panggil (${valueAdmin.detailPeminjaman.bukuModel[i].noPanggil})',
-                                  value:
-                                      'Buku ${valueAdmin.detailPeminjaman.bukuModel[i].judul}'),
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (valueAdmin.detailPeminjaman.noPanggil1 !=
+                                  null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: VerticalTitleValue(
+                                      title:
+                                          'Nomor Panggil (${valueAdmin.detailPeminjaman.noPanggil1})',
+                                      value:
+                                          'Buku ${valueAdmin.detailPeminjaman.bukuModel[0].judul}'),
+                                ),
+                              if (valueAdmin.detailPeminjaman.noPanggil2 !=
+                                  null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: VerticalTitleValue(
+                                      title:
+                                          'Nomor Panggil (${valueAdmin.detailPeminjaman.noPanggil2})',
+                                      value:
+                                          'Buku ${valueAdmin.detailPeminjaman.bukuModel[1].judul}'),
+                                ),
+                              if (valueAdmin.detailPeminjaman.noPanggil3 !=
+                                  null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: VerticalTitleValue(
+                                      title:
+                                          'Nomor Panggil (${valueAdmin.detailPeminjaman.noPanggil3})',
+                                      value:
+                                          'Buku ${valueAdmin.detailPeminjaman.bukuModel[2].judul}'),
+                                ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
@@ -186,9 +211,20 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                           isEmpty = true;
                           print('Jadi true');
                         }
-                         np.update('$i', (value) => _controller[i].text);
-                        print('value np $i : ${np[i]}');
-                        print('controller $i : ${_controller[i].text}');
+                        if (i == 0) {
+                          noPanggil1 = _controller[i].text;
+                          print('value np $i : $noPanggil1');
+                          print('controller $i : ${_controller[i].text}');
+                        } else if (i == 1) {
+                          noPanggil2 = _controller[i].text;
+                          print('value np $i : $noPanggil2');
+                          print('controller $i : ${_controller[i].text}');
+                        } else if (i == 2) {
+                          noPanggil3 = _controller[i].text;
+                          print('value np $i : $noPanggil3');
+                          print('controller $i : ${_controller[i].text}');
+                        }
+
                         i++;
                       }
                       print('isEmpty $isEmpty');
@@ -197,14 +233,14 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
                         var result = await Provider.of<PeminjamanProvider>(
                                 context,
                                 listen: false)
-                            .setNoHpPeminjaman(
-                                np, noHp, valueAdmin.detailPeminjaman);
+                            .setNoHpPeminjaman(noPanggil1, noPanggil2,
+                                noPanggil3, valueAdmin.detailPeminjaman);
                         result.fold((l) {
-                          print('Gagal, no Hp: $noHp');
+                          print('Gagal, np : $noPanggil1');
                         }, (r) {
-                          print('Berhasil, no Hp: $noHp');
+                          print('Berhasil, np: $noPanggil1');
                         });
-                        doKonfirmasiPengambilan(context, noHp);
+                        doKonfirmasiPengambilan(context, noPanggil1!);
                         // await _peminjamanService.setNoHp(
                         //     noHp, valueAdmin.detailPeminjaman);
                       } else {
@@ -313,10 +349,7 @@ class _AdminDetailPageState extends State<AdminDetailPage> {
     });
   }
 
-  doKonfirmasiPengambilan(
-    BuildContext context,
-    String noHp,
-  ) async {
+  doKonfirmasiPengambilan(BuildContext context, String noPanggil1) async {
     EasyLoading.show(status: "Loading");
 
     var result = await Provider.of<AdminProvider>(context, listen: false)
